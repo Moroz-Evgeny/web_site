@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="static/style.css" />
+		<script src="static/script.js" defer></script>
+		<title>Расскажи всему миру</title>
+	</head>
+	<body>
+		<header class="header">
+			<button class="logo" onclick="location.href='/'" method="GET">
+				<img src="static/images/logo.png" alt="Логотип" />
+			</button>
+
+			<div class="nav-container">
+				<nav>
+					<ul class="nav-list">
+						<li>
+							<button onclick="location.href='/'" method="GET">Главная</button>
+						</li>
+						<li>
+							<button onclick="location.href='/new_state'" method="GET">
+								Написать статью
+							</button>
+						</li>
+						<li><button onclick="location.href='#'">Задать вопрос</button></li>
+						<li><button onclick="location.href='#'">О нас</button></li>
+					</ul>
+				</nav>
+			</div>
+
+			<div class="login">
+				{% if user_logged_in %}
+				<button onclick="window.location.href='/profile'">
+					Личный кабинет
+				</button>
+				{% else %}
+				<button onclick="window.location.href='/login'">Войти</button>
+				{% endif %}
+			</div>
+
+			<div class="hamburger">
+				<div class="bar"></div>
+				<div class="bar"></div>
+				<div class="bar"></div>
+			</div>
+
+			<div class="sidebar" id="sidebar">
+				<ul class="nav-list">
+					<li><button>Главная</button></li>
+					<li><button>Написать статью</button></li>
+					<li><button>Задать вопрос</button></li>
+					<li><button>О нас</button></li>
+				</ul>
+			</div>
+		</header>
+		<div class="main">
+			<div class="search-container">
+				<input
+					type="text"
+					class="search-input"
+					placeholder="Поиск по статьям..."
+					onfocus="hidePlaceholder()"
+					onblur="showPlaceholder()"
+				/>
+				<button class="search-button">Найти</button>
+			</div>
+		</div>
+
+		<link
+			href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+			rel="stylesheet"
+		/>
+		<section class="hero-section">
+			<div class="card-grid">
+				<a class="card card_1" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://ibef.bilkent.edu.tr/wp-content/uploads/2017/01/books.jpg);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Гуманитарные науки</h3>
+					</div>
+				</a>
+				<a class="card card_4" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=fdb723eb48978eff57968a66bb972478_l-5287954-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Естественные науки</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=83211456969528b3b5503ea79401abb8f10b5ae4-12621680-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Точные науки</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://yandex-images.clstorage.net/vl9Q74Z19/cf01df8jcOW/tSyAGf2mVeWyKRm0CKhwPc4iO3i-7pNR9TGsvojPWF1BGfXFrMk2jG1OU1M70NOsCuyijkHGUyX5OQDEr8oXhqBo0wgtYUIxI64MtghpMLqZcv8_qG-EF2Wmry6eWdrdVMLvjbGV7If1RU-Y5dZF7x_tpYvRQgkrKGNQiWxSjt-zJU2RdDyYLzqwmrBHILc_m-F8vuZhRNa3amwnCNMExwUIJgwzVG7Is4xHmKwdSCBbKeKa2UqLJLJlHcmmnwIXtGCKUDBwUO8zP9m-CGU58FFkO7urZA6QeCcuqQofSU2FiG2OdBSmRndFztZq2M4tnKQmnlZDz-QxqJxF5NTF3XkthBXy-d-vsjHU8M4gMLiXYXr5pyJMVf4irmoDUg1AgwDpjL1f6gC8h8Nf4hLAKh2u5pCdCo6tdK9ch2sbTto8KAnbMHWboHq_37QK5T1-FSfy--4uBF-54q9iRBiHzEqN6Uz_X-BMso3F3CJSBK3bYKBcHkRHJLwsWwBkHIEdvKiLH_KwX2x3N9X3yeC7v9bnO7Ymr4QRNOMoJoBeDgHFzeGGu9apBLwHhd5kmUmu16bvlJkNSqL9rlEN6x-F2PjiRZw__Vsp97_Z_MGj-7eYbzc86CaCFv1kJaZI0o_AhAdrAbvRaYh3RAKWqxNP55qv6JHeS0xluilVx2qaQJ97IMZfun1VZH4_nr1La7QynOIxNSVgCBB2qmWmyhTARARAIYey0eZNuAqD1CgSziUWqeBZVkfFJD0o0AfhHscaOSOC2fz_niz_uh65gK17ftXheTHuaEcTMOqobMUTyUzNC6HAvdZgzXpFj5mk3Y-hFiggEJ6DCG0-IFjGat7Akvlkwtw19ZUk-PHdsQgq8rKfIvh-Zm8N2_RlriJBk49BisWpzrmZbkq3hY4epZwGZxemaVQfioylOaBdzOUXQxE5aUyXPLaXaro3U3yGKvwxVmOzd-xuhtn3J2eryA);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Постнаука</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://yandex-images.clstorage.net/vl9Q74Z19/cf01df8jcOW/tSyAGf2mVeWyKRm0CKhwPc4iO3i-7pNR9TG4PJ2amUiV2XRRL9wizK-ZRsZ6hdCsHqy3DUDGEnD4ONSFbssDk_T8EwgsYMNwYK7MtghpMLqZcv8_qG-EF2Wmry6eWdrdVMLvjbGV7If1RU-Y5dZF7x_tpYvRQgkrKGNQiWxSjt-zJU2RdDyYLzqwmrBHILc_m-F8vuZhRNa3amwnCNMExwUIJgwzVG7Is4xHmKwdSCBbKeKa2UqLJLJlHcmmnwIXtGCKUDBwUO8zP9m-CGU58FFkO7urZA6QeCcuqQofSU2FiG2OdBSmRndFztZq2M4tnKQmnlZDz-QxqJxF5NTF3XkthBXy-d-vsjHU8M4gMLiXYXr5pyJMVf4irmoDUg1AgwDpjL1f6gC8h8Nf4hLAKh2u5pCdCo6tdK9ch2sbTto8KAnbMHWboHq_37QK5T1-FSfy--4uBF-54q9iRBiHzEqN6Uz_X-BMso3F3CJSBK3bYKBcHkRHJLwsWwBkHIEdvKiLH_KwX2x3N9X3yeC7v9bnO7Ymr4QRNOMoJoBeDgHFzeGGu9apBLwHhd5kmUmu16bvlJkNSqL9rlEN6x-F2PjiRZw__Vsp97_Z_MGj-7eYbzc86CaCFv1kJaZI0o_AhAdrAbvRaYh3RAKWqxNP55qv6JHeS0xluilVx2qaQJ97IMZfun1VZH4_nr1La7QynOIxNSVgCBB2qmWmyhTARARAIYey0eZNuAqD1CgSziUWqeBZVkfFJD0o0AfhHscaOSOC2fz_niz_uh65gK17ftXheTHuaEcTMOqobMUTyUzNC6HAvdZgzXpFj5mk3Y-hFiggEJ6DCG0-IFjGat7Akvlkwtw19ZUk-PHdsQgq8rKfIvh-Zm8N2_RlriJBk49BisWpzrmZbkq3hY4epZwGZxemaVQfioylOaBdzOUXQxE5aUyXPLaXaro3U3yGKvwxVmOzd-xuhtn3J2eryA);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Биология</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=00788aada75a6fa664436d0c1debf3f159dfa431-10141678-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">История</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=8df6238ceee541d77b8408dc3938290b0a7f1bf6-5232475-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Социальные науки</h3>
+					</div>
+				</a>
+				<a class="card card_2" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=ffe86f104835ce9e560cfed506e772e4011eaffedc4a2a7d-12421721-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Культура</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=2410083e3bfc9c2221776d115913ded80a5067a4-9265621-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Медицина</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=7b5407efb8ea27da61de9549b3bee57ba4b98f857a121e9d-5173468-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Физика</h3>
+					</div>
+				</a>
+				<a class="card card_3" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=c6a212502491f94f76166d228fd2cf2e005e219a-8177627-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Психология</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=ad35fc3e27f5f5359a8962747c4dc43953d9ef15-5343653-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Когнитвные науки</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=6d1a0727a1c33fc18d0396148ef234f51a463df7-4055439-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Технологии</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=392c73351b5e8262ab4000f3846884d25c3a50797b604ef5-9699538-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Книги</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=8596436aee0e5d6bcb8f1277dcb490b18501630b-4841341-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Животный мир</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=2e6f952642328b5a5b47f89daf2f3e8e733cedf5-5100139-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Новости</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=9dbb466b929cb36ea363f1343710beecd43efd6b-13606603-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Игры</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=be2882ec9b9e3a20fccf865c1f2d8c75d0c3a33d-5480941-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Зарубежная литература</h3>
+					</div>
+				</a>
+				<a class="card" href="#">
+					<div
+						class="card__background"
+						style="
+							background-image: url(https://avatars.mds.yandex.net/i?id=75ec3f13227b00fe1f3f6b90ceaae725dde467a1-11511205-images-thumbs&n=13);
+						"
+					></div>
+					<div class="card__content">
+						<p class="card__category">Категория</p>
+						<h3 class="card__heading">Новости Ростова-на-дону</h3>
+					</div>
+				</a>
+			</div>
+		</section>
+	</body>
+</html>

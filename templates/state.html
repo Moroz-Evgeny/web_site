@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Загрузка статьи</title>
+	</head>
+	<body>
+		<form
+			action="{{ url_for('new_state') }}"
+			method="POST"
+			enctype="multipart/form-data"
+		>
+			<label for="title">Название статьи:</label>
+			<input type="text" name="title" id="title" required /><br />
+
+			<label for="categories">Категории:</label><br />
+			<input type="checkbox" name="categories" value="Category 1" /> Category
+			1<br />
+			<input type="checkbox" name="categories" value="Category 2" /> Category
+			2<br />
+			<input type="checkbox" name="categories" value="Category 3" /> Category
+			3<br />
+
+			<label for="file">Загрузить Word файл:</label>
+			<input type="file" name="file" id="file" accept=".doc" required /><br />
+
+			<button type="submit">Добавить статью</button>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,83 @@
+{
+    "database.connections": {
+        "1728677255471": {
+            "key": "1728677255471",
+            "host": "127.0.0.1",
+            "port": 8123,
+            "user": "default",
+            "password": "",
+            "timezone": "+00:00",
+            "useSSL": false,
+            "isCluster": false,
+            "clientCertPath": null,
+            "clientKeyPath": null,
+            "ssh": {
+                "host": "",
+                "privateKeyPath": "C:\\Users\\ROG\\.ssh\\id_rsa",
+                "port": 22,
+                "username": "root",
+                "type": "password",
+                "connectTimeout": 10000,
+                "algorithms": {
+                    "cipher": []
+                }
+            },
+            "usingSSH": false,
+            "esAuth": "none",
+            "encoding": "utf8",
+            "showHidden": false,
+            "connectionKey": "database.connections",
+            "global": false,
+            "dbType": "SQLite",
+            "connectionUrl": "",
+            "encrypt": false,
+            "dbPath": "User",
+            "authType": "default",
+            "disable": true,
+            "includeDatabases": null,
+            "database": "default",
+            "name": "User",
+            "tooltip": "Host: 127.0.0.1, Port: 8123"
+        },
+        "1728677461456": {
+            "key": "1728677461456",
+            "host": "127.0.0.1",
+            "port": "3306",
+            "user": "root",
+            "password": "",
+            "timezone": "+00:00",
+            "useSSL": false,
+            "isCluster": false,
+            "clientCertPath": null,
+            "clientKeyPath": null,
+            "ssh": {
+                "host": "",
+                "privateKeyPath": "C:\\Users\\ROG\\.ssh\\id_rsa",
+                "port": 22,
+                "username": "root",
+                "type": "password",
+                "connectTimeout": 10000,
+                "algorithms": {
+                    "cipher": []
+                },
+                "tunnelPort": null
+            },
+            "usingSSH": false,
+            "esAuth": "none",
+            "encoding": "utf8",
+            "showHidden": false,
+            "connectionKey": "database.connections",
+            "global": false,
+            "dbType": "SQLite",
+            "connectionUrl": "",
+            "encrypt": true,
+            "dbPath": "d:\\Project Go\\web_site\\instance\\User.db",
+            "authType": "default",
+            "disable": true,
+            "includeDatabases": null,
+            "database": null,
+            "name": "User",
+            "tooltip": "Host: 127.0.0.1, Port: 3306"
+        }
+    }
+}

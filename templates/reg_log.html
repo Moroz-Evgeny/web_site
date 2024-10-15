@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="static/rg.css" />
+		<script src="static/rg.js"></script>
+		<title>Регистрация/Вход</title>
+	</head>
+	<body>
+		<!-- Элемент audio для воспроизведения звука -->
+		<audio
+			id="notificationSound"
+			src="{{ url_for('static', filename='sounds/error.mp3') }}"
+			preload="auto"
+		></audio>
+
+		<!-- Отображение флеш-сообщений -->
+		{% with messages = get_flashed_messages(with_categories=true) %} {% if
+		messages %} {% for category, message in messages %}
+		<div class="flash-message {{ category }}">{{ message }}</div>
+		{% endfor %} {% endif %} {% endwith %}
+
+		<script>
+			// Найдем все элементы с классом flash-message
+			const flashMessages = document.querySelectorAll('.flash-message')
+
+			// Найдем элемент аудио
+			const notificationSound = document.getElementById('notificationSound')
+
+			// Скрыть уведомление через 3 секунды
+			flashMessages.forEach(message => {
+				// Проигрываем звук при появлении сообщения
+				notificationSound.play()
+
+				setTimeout(() => {
+					message.classList.add('fade-out') // Добавляем класс для плавного исчезновения
+				}, 3000) // Через 3 секунды
+
+				// Полностью удалить элемент через 4 секунды (после завершения анимации)
+				setTimeout(() => {
+					message.remove()
+				}, 4000) // Через 4 секунды (1 секунда на завершение анимации)
+			})
+		</script>
+
+		<div class="login-wrap">
+			<div class="login-html">
+				<input
+					id="tab-1"
+					type="radio"
+					name="tab"
+					class="sign-in"
+					checked
+				/><label for="tab-1" class="tab">Войти</label>
+				<input id="tab-2" type="radio" name="tab" class="sign-up" /><label
+					for="tab-2"
+					class="tab"
+					>Зарегистрироваться</label
+				>
+				<div class="login-form">
+					<form class="sign-in-htm" method="POST" action="/login">
+						<div class="group">
+							<label for="user" class="label">Email</label>
+							<input id="user" type="text" class="input" name="emailLogin" />
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Пароль</label>
+							<input
+								id="pass"
+								type="password"
+								class="input"
+								data-type="password"
+								name="passwordLogin"
+							/>
+						</div>
+						<div class="group">
+							<button class="button" style="margin-top: 35%" method="POST">
+								Войти
+							</button>
+						</div>
+					</form>
+					<form class="sign-up-htm" method="POST" action="/register">
+						<div class="group">
+							<label for="user" class="label">Имя</label>
+							<input id="user" type="text" class="input" name="firstName" />
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Фамилия</label>
+							<input id="pass" class="input" name="lastName" />
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Email</label>
+							<input id="pass" class="input" name="emailRegister" />
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Пароль</label>
+							<input
+								id="pass"
+								type="password"
+								data-type="password"
+								class="input"
+								name="passwordRegister"
+							/>
+						</div>
+						<div class="group">
+							<button class="button" method="POST">Зарегистрироваться</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
