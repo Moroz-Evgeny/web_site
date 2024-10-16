@@ -23,8 +23,11 @@ class User(db.Model):
 # Главная страница
 @app.route('/')
 def index():
-    return render_template('index.html', userName = session['userName'], userLogged = 'userLogged' in session)
-
+    try:
+        return render_template('index.html', userName = session['userName'], userLogged = 'userLogged' in session)
+    except:
+        return render_template('index.html')
+    
 # Маршрут для логина
 @app.route('/login', methods=['GET', 'POST'])
 def login():
