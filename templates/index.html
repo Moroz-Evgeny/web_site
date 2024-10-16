@@ -31,8 +31,8 @@
 			</div>
 
 			<div class="login">
-				{% if user_logged_in %}
-				<button onclick="window.location.href='/profile'">
+				{% if userLogged %}
+				<button onclick="window.location.href='/profile/{{userName}}'">
 					Личный кабинет
 				</button>
 				{% else %}

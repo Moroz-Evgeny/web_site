@@ -1,12 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-   <button onclick="window.location.href='/logout'">Выйти</button>
-   <button onclick="window.location.href='/'">Главная</button>
-</body>
-</html>
+{% extends 'base.html' %} {% block title %} Личный кабинет {% endblock %} {%
+block body %}
+<div class="container_profile">
+	<script>
+		function showSection(sectionId) {
+			// Скрываем все секции
+			document.getElementById('profileSection').style.display = 'none'
+			document.getElementById('articlesSection').style.display = 'none'
+			document.getElementById('requestsSection').style.display = 'none'
+
+			// Показываем выбранную секцию
+			document.getElementById(sectionId).style.display = 'block'
+		}
+
+		// По умолчанию показываем блок профиля
+		window.onload = function () {
+			showSection('profileSection')
+		}
+	</script>
+	<header>
+		<h1>Личный кабинет</h1>
+		<nav>
+			<ul>
+				<li>
+					<a href="#" onclick="showSection('articlesSection')">Мои статьи</a>
+				</li>
+				<li>
+					<a href="#" onclick="showSection('requestsSection')">Мои обращения</a>
+				</li>
+				<li><a href="#" onclick="showSection('profileSection')">Профиль</a></li>
+				<li><a href="/logout">Выйти</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<!-- Блок профиля -->
+	<section id="profileSection" style="display: none">
+		<div class="profile-info">
+			<div class="profile-header">
+				<div class="profile-photo">
+					<img src="https://yastatic.net/naydex/yandex-search/GuGRc8185/1acf03p77b/nr1VHs0vJMT0Dq0nxPvvYqvcQ3zE55Fn1wyOV07cjTs807XT5hQD-z0oO2So1_2Uy4Kt4HUYjKgeiw2TM-v034y_FlKHbz6RpU60c8z46mC2gQBt2L2VOs1O0gwG1NQ0NdbftZc3d5BCTBEa1aCwxMTe-ftoXpiSJw" alt="Фото профиля" id="profileImage" />
+				</div>
+				<div class="profile-details">
+					<h2>Ваш профиль</h2>
+					<p>Имя: Иван Иванов</p>
+					<p>Email: ivan@example.com</p>
+				</div>
+			</div>
+			<form action="/upload_photo" method="POST" enctype="multipart/form-data">
+				<label for="photoUpload">Загрузить новое фото профиля:</label>
+				<input type="file" id="photoUpload" name="photo" accept="image/*" />
+				<button type="submit">Загрузить</button>
+			</form>
+		</div>
+	</section>
+
+	<!-- Блок с моими статьями -->
+	<section id="articlesSection" style="display: none">
+		<h2>Мои статьи</h2>
+		<ul>
+			<li><a href="#">Статья 1</a></li>
+			<li><a href="#">Статья 2</a></li>
+			<li><a href="#">Статья 3</a></li>
+		</ul>
+		<button>Добавить статью</button>
+	</section>
+
+	<!-- Блок с моими обращениями -->
+	<section id="requestsSection" style="display: none">
+		<h2>Мои обращения</h2>
+		<ul>
+			<li>Обращение 1</li>
+			<li>Обращение 2</li>
+			<li>Обращение 3</li>
+		</ul>
+		<button>Добавить обращение</button>
+	</section>
+
+	<footer>
+		<p>Личный кабинет &copy; 2024</p>
+	</footer>
+</div>
+{% endblock %}

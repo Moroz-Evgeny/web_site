@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}" />
+		<script src="static/script.js" defer></script>
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body>
+		<header class="header">
+			<button class="logo" onclick="location.href='/'" method="GET">
+				<img src="{{url_for('static', filename='images/logo.png')}}" alt="Логотип" />
+			</button>
+
+			<div class="nav-container">
+				<nav>
+					<ul class="nav-list">
+						<li>
+							<button onclick="location.href='/'" method="GET">Главная</button>
+						</li>
+						<li>
+							<button onclick="location.href='/new_state'" method="GET">
+								Написать статью
+							</button>
+						</li>
+						<li><button onclick="location.href='#'">Задать вопрос</button></li>
+						<li><button onclick="location.href='#'">О нас</button></li>
+					</ul>
+				</nav>
+			</div>
+
+			<div class="login">
+        {% block button %}
+				
+        {% endblock %}
+      </div>
+
+			<div class="hamburger">
+				<div class="bar"></div>
+				<div class="bar"></div>
+				<div class="bar"></div>
+			</div>
+
+			<div class="sidebar" id="sidebar">
+				<ul class="nav-list">
+					<li><button>Главная</button></li>
+					<li><button>Написать статью</button></li>
+					<li><button>Задать вопрос</button></li>
+					<li><button>О нас</button></li>
+				</ul>
+			</div>
+		</header>
+
+		<link
+			href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+			rel="stylesheet"
+		/>
+    {% block body %}
+    {% endblock %}
+	</body>
+</html>

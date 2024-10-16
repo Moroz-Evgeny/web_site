@@ -1,11 +1,12 @@
 from flask import Flask, flash, redirect, render_template, session, url_for, request
 from flask_sqlalchemy import SQLAlchemy
+import translit
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-app.secret_key = '80830614'
+app.secret_key = 'ofjoiejj4983f4398j9f092k0k0ef0ejf093'
 
 # Модель пользователя
 class User(db.Model):
@@ -22,7 +23,7 @@ class User(db.Model):
 # Главная страница
 @app.route('/')
 def index():
-    return render_template('index.html', user_logged_in='logged_in' in session)
+    return render_template('index.html', userName = session['userName'], userLogged = 'userLogged' in session)
 
 # Маршрут для логина
 @app.route('/login', methods=['GET', 'POST'])
@@ -34,8 +35,10 @@ def login():
         # Поиск пользователя по email и паролю
         user = User.query.filter_by(email=email, password=password).first()
         if user:
-            session['logged_in'] = True
-            return render_template('index.html',user_logged_in='logged_in' in session)
+            print(user)
+            session['userLogged'] = True
+            session['userName'] = translit.transliterate(user.name + '_' + user.last_name)
+            return render_template('index.html', userName = session['userName'], userLogged = 'userLogged' in session)
         else:
             # Если пользователь не найден, возвращаем на страницу с ошибкой
             flash('Неверный логин или пароль, повторите попытку')
@@ -69,12 +72,12 @@ def register():
 
 @app.route('/logout')
 def logout():
-    session.pop('logged_in', None)  # Удаляем logged_in из сессии
+    session.pop('userLogged', None)  # Удаляем logged_in из сессии
     return redirect(url_for('index')) 
 
-@app.route('/profile')
-def profile():
-    return render_template('profile.html', user_logged_in='logged_in' in session)
+@app.route('/profile/<userName>')
+def profile(userName):
+    return render_template('profile.html')
 
 
 if __name__ == "__main__":
@@ -82,3 +85,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
