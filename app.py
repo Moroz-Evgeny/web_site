@@ -38,10 +38,12 @@ def login():
         # Поиск пользователя по email и паролю
         user = User.query.filter_by(email=email, password=password).first()
         if user:
-            print(user)
+            session['userFirstname'] = user.name
+            session['userLastname'] = user.last_name
+            session['userEmail'] = user.email
             session['userLogged'] = True
             session['userName'] = translit.transliterate(user.name + '_' + user.last_name)
-            return render_template('index.html', userName = session['userName'], userLogged = 'userLogged' in session)
+            return redirect(url_for('index', userName = session['userName'], userLogged = 'userLogged' in session))
         else:
             # Если пользователь не найден, возвращаем на страницу с ошибкой
             flash('Неверный логин или пароль, повторите попытку')
@@ -75,13 +77,17 @@ def register():
 
 @app.route('/logout')
 def logout():
-    session.pop('userLogged', None)  # Удаляем logged_in из сессии
+    session.clear()
     return redirect(url_for('index')) 
 
 @app.route('/profile/<userName>')
 def profile(userName):
-    return render_template('profile.html')
-
+    if userName != session['userName'] or 'userName' not in session:
+        flash('Доступ запрещён! Ошибка 403.')
+        return render_template('profile.html')
+    else:
+        return render_template('profile.html', userFirstname=session['userFirstname'], userLastname=session['userLastname'], userEmail=session['userEmail'])
+        
 
 if __name__ == "__main__":
     # Создание всех таблиц при запуске

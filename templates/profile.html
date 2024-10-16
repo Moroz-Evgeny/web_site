@@ -1,5 +1,14 @@
-{% extends 'base.html' %} {% block title %} Личный кабинет {% endblock %} {%
-block body %}
+{% extends 'base.html' %} 
+{% block title %} Личный кабинет {% endblock %} 
+{% block body %}
+
+{% with messages = get_flashed_messages(with_categories=true) %} 
+
+{% if messages %} 
+{% for message in messages %}
+<div class="container_profile" style="display: flex; justify-content: center; align-items: center; color: darkred;"><h1>{{message[1]}}</h1></div>
+{% endfor %}
+{% else %}
 <div class="container_profile">
 	<script>
 		function showSection(sectionId) {
@@ -21,13 +30,13 @@ block body %}
 		<h1>Личный кабинет</h1>
 		<nav>
 			<ul>
+				<li><a href="#" onclick="showSection('profileSection')">Профиль</a></li>				
 				<li>
 					<a href="#" onclick="showSection('articlesSection')">Мои статьи</a>
 				</li>
 				<li>
 					<a href="#" onclick="showSection('requestsSection')">Мои обращения</a>
 				</li>
-				<li><a href="#" onclick="showSection('profileSection')">Профиль</a></li>
 				<li><a href="/logout">Выйти</a></li>
 			</ul>
 		</nav>
@@ -42,8 +51,9 @@ block body %}
 				</div>
 				<div class="profile-details">
 					<h2>Ваш профиль</h2>
-					<p>Имя: Иван Иванов</p>
-					<p>Email: ivan@example.com</p>
+					<p>Имя: {{userFirstname}}</p>
+					<p>Фамилия: {{userLastname}}</p>
+					<p>Email: {{userEmail}}</p>
 				</div>
 			</div>
 			<form action="/upload_photo" method="POST" enctype="multipart/form-data">
@@ -80,4 +90,6 @@ block body %}
 		<p>Личный кабинет &copy; 2024</p>
 	</footer>
 </div>
+{% endif %}
+{% endwith %}
 {% endblock %}
