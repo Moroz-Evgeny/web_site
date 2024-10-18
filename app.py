@@ -1,7 +1,7 @@
 from flask import Flask, flash, redirect, render_template, session, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 import translit
-print('aye')
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
