@@ -1,0 +1,20 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 20px;
+}
+form {
+	max-width: 600px;
+	margin: 0 auto;
+}
+input,
+textarea,
+select,
+button {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+label {
+	margin-bottom: 5px;
+	font-weight: bold;
+}

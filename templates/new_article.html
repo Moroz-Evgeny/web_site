@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить статью</title>
+		<link rel="stylesheet" href="{{url_for('static', filename='new_article.css')}}">
+</head>
+<body>
+    <h1>Добавить новую статью</h1>
+    <form action="/new-article" method="post" enctype="multipart/form-data">
+        <!-- Заголовок статьи -->
+        <label for="title">Заголовок статьи</label>
+        <input type="text" id="title" name="title" placeholder="Введите заголовок" required>
+
+        <!-- Основной текст статьи -->
+        <label for="content">Основной текст</label>
+        <textarea id="content" name="content" rows="10" placeholder="Введите основной текст статьи" required></textarea>
+
+        <!-- Загрузка обложки статьи -->
+         
+        <!-- <label for="cover">Загрузить обложку статьи</label>
+        <input type="file" id="cover" name="cover" accept="image/*" required> -->
+
+        <!-- Категории (несколько выпадающих списков) -->
+        <label for="category1">Категория 1</label>
+        <select id="category1" name="category1" required>
+            <option value="" disabled selected>Выберите категорию</option>
+						{% for ctg in cat %}
+						<option value="{{trans_cat[cat.index(ctg)]}}">{{ctg}}</option>
+						{% endfor %}
+				</select>
+
+        <label for="category2">Категория 2</label>
+        <select id="category2" name="category2">
+            <option value="" disabled selected>Выберите категорию</option>
+						{% for ctg in cat %}
+						<option value="{{trans_cat[cat.index(ctg)]}}">{{ctg}}</option>
+						{% endfor %}
+        </select>
+
+        <label for="category3">Категория 3</label>
+        <select id="category3" name="category3">
+            <option value="" disabled selected>Выберите категорию</option>
+						{% for ctg in cat %}
+						<option value="{{trans_cat[cat.index(ctg)]}}">{{ctg}}</option>
+						{% endfor %}
+        </select>
+
+        <!-- Кнопка отправки -->
+        <button type="submit">Добавить статью</button>
+    </form>
+</body>
+</html>

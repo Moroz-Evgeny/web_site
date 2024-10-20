@@ -3,14 +3,50 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="static/style.css" />
+		<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
 		<script src="static/script.js" defer></script>
 		<title>Расскажи всему миру</title>
 	</head>
 	<body>
+		<!-- Элемент audio для воспроизведения звука -->
+		<audio
+			id="notificationSound"
+			src="{{ url_for('static', filename='sounds/error.mp3') }}"
+			preload="auto"
+		></audio>
+
+		<!-- Отображение флеш-сообщений -->
+		{% with messages = get_flashed_messages(with_categories=true) %} {% if
+		messages %} {% for category, message in messages %}
+		<div class="flash-message">{{ message }}</div>
+		{% endfor %} {% endif %} {% endwith %}
+
+		<script>
+			// Найдем все элементы с классом flash-message
+			const flashMessages = document.querySelectorAll('.flash-message')
+
+			// Найдем элемент аудио
+			const notificationSound = document.getElementById('notificationSound')
+
+			// Скрыть уведомление через 3 секунды
+			flashMessages.forEach(message => {
+				// Проигрываем звук при появлении сообщения
+				notificationSound.play()
+
+				setTimeout(() => {
+					message.classList.add('fade-out') // Добавляем класс для плавного исчезновения
+				}, 2000) // Через 3 секунды
+
+				// Полностью удалить элемент через 4 секунды (после завершения анимации)
+				setTimeout(() => {
+					message.remove()
+				}, 3000) // Через 4 секунды (1 секунда на завершение анимации)
+			})
+		</script>
+
 		<header class="header">
 			<button class="logo" onclick="location.href='/'" method="GET">
-				<img src="static/images/logo.png" alt="Логотип" />
+				<img src = '{{url_for('static', filename='images/logo.png')}}' alt="Логотип" />
 			</button>
 
 			<div class="nav-container">
@@ -20,7 +56,10 @@
 							<button onclick="location.href='/'" method="GET">Главная</button>
 						</li>
 						<li>
-							<button onclick="location.href='/new_state'" method="GET">
+							<button
+								onclick="location.href='/new-article'"
+								method="GET"
+							>
 								Написать статью
 							</button>
 						</li>

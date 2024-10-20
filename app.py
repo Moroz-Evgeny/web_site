@@ -1,6 +1,8 @@
+from datetime import datetime
 from flask import Flask, flash, redirect, render_template, session, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 import translit
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.db'
@@ -21,6 +23,21 @@ class User(db.Model):
         return f'<User {self.id}>'
 
 
+class Articles(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=True)
+    content = db.Column(db.Text, nullable=True)
+    cover = db.Column(db.String, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<Article {self.id}>'
+
+categories = ["Гуманитарные науки", "Естественные науки", "Точные науки", "Постнаука", "Биология", "История", "Социальные науки", "Культура", "Медицина", "Физика", "Психология", "Когнитивные науки", "Технологии", "Книги", "Животный мир", "Новости", "Игры", "Зарубежная литература", "Новости Ростова-на-дону"]
+trans_catigories = [translit.transliterate(i) for i in categories]
+
 # Главная страница
 @app.route('/')
 def index():
@@ -39,6 +56,7 @@ def login():
         # Поиск пользователя по email и паролю
         user = User.query.filter_by(email=email, password=password).first()
         if user:
+            session['userId'] = user.id
             session['userFirstname'] = user.name
             session['userLastname'] = user.last_name
             session['userEmail'] = user.email
@@ -88,8 +106,28 @@ def profile(userName):
         return render_template('profile.html')
     else:
         return render_template('profile.html', userFirstname=session['userFirstname'], userLastname=session['userLastname'], userEmail=session['userEmail'])
-        
 
+
+@app.route('/new-article', methods=["GET", "POST"])
+def new_article():
+    if request.method == "POST":
+        title = request.form['title']
+        content = request.form['content']
+        user_id = session['userId']
+
+        article = Articles(title=title, content=content, user_id=user_id)
+
+        db.session.add(article)
+        db.session.commit()
+        return redirect(url_for('index'))
+    else:
+        if not session.get('userLogged'):
+            flash('Войдите или зарегистрируйтесь!')
+            return redirect(url_for('index'))
+        else:
+            return render_template('new_article.html', cat=categories, trans_cat=trans_catigories)
+        
+    
 if __name__ == "__main__":
     # Создание всех таблиц при запуске
     with app.app_context():

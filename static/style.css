@@ -48,10 +48,11 @@ body {
 }
 
 .nav-container {
+	position: fixed;
 	height: 50px;
 	display: flex; /* Горизонтальное расположение */
-	margin-right: auto;
-	margin-left: auto;
+	margin-right: 33%;
+	margin-left: 33%;
 }
 
 .nav-list {
@@ -648,4 +649,28 @@ form input {
 	background-color: #4caf50;
 	color: white;
 	border-radius: 5px;
+}
+
+.flash-message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50px;
+	height: 80px;
+	width: 460px;
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	z-index: 1000; /* Поверх всех тегов */
+	background-color: #282828; /* Полупрозрачный фон */
+	color: rgb(255, 36, 36);
+	padding: 10px 20px;
+	font-size: 17px;
+	opacity: 0.99;
+	transition: opacity 0.5s ease-out; /* Плавное изменение прозрачности */
+}
+
+/* Когда сообщение будет скрываться */
+.fade-out {
+	opacity: 0; /* Прозрачность 0 для скрытия */
 }
