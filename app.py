@@ -8,7 +8,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 app.secret_key = 'ofjoiejj4983f4398j9f092k0k0ef0ejf093'
 
-lskdjfoisdjfoisdjoiffs
 
 # Модель пользователя
 class User(db.Model):
