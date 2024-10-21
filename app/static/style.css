@@ -674,3 +674,7 @@ form input {
 .fade-out {
 	opacity: 0; /* Прозрачность 0 для скрытия */
 }
+
+.flash-message.success{
+	color: green;
+}
