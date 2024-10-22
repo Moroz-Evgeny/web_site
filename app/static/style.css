@@ -675,6 +675,6 @@ form input {
 	opacity: 0; /* Прозрачность 0 для скрытия */
 }
 
-.flash-message.success{
+.flash-message.success {
 	color: green;
 }

@@ -1,3 +1,4 @@
+import json
 import os
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
 from app.models import Articles, Categories
@@ -12,10 +13,18 @@ trans_categories = [translit.transliterate(i) for i in categories]
 
 @articles.route('/new-article', methods=["GET", "POST"])
 def new_article():
+
     if request.method == "POST":
         title = request.form['title']
         content = request.form['content'] 
-        category = [Categories.query.filter_by(name=request.form.get(f'category{i}')).first().id for i in range(1, 4) if request.form.get(f'category{i}')]
+        category_ids = [
+        Categories.query.filter_by(name=request.form.get(f'category{i}')).first().id
+        for i in range(1, 4)
+        if request.form.get(f'category{i}') and Categories.query.filter_by(name=request.form.get(f'category{i}')).first()
+        ]
+        
+        # Преобразуем список ID категорий в JSON
+        category = json.dumps(category_ids)
 
         # Обработка загрузки картинки
         if 'cover' in request.files:
@@ -38,6 +47,29 @@ def new_article():
 
         db.session.add(article)
         db.session.commit()
+
+        article_id = article.id
+
+        # Добавление в таблицу категорий id статьи
+        for category_id in category:
+            category = Categories.query.get(category_id)
+            
+            if category:
+                # Десериализуем список ID статей (если уже есть)
+                if category.id_article:
+                    id_article_list = json.loads(category.id_article)
+                else:
+                    id_article_list = []
+
+                # Добавляем новый ID статьи в список
+                id_article_list.append(article_id)
+
+                # Сериализуем список обратно в строку и сохраняем
+                category.id_article = json.dumps(id_article_list)
+
+                # Сохраняем изменения в базе данных
+                db.session.commit()
+        
 
         flash('Статья успешно добавлена!', 'success')
         return redirect(url_for('main.index'))
