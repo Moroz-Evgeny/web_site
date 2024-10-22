@@ -1,22 +1,29 @@
-import json
-import os
+import base64, json, os, mammoth
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
 from app.models import Articles, Categories
 from app import db
 from app import translit
+from werkzeug.utils import secure_filename
 
 articles = Blueprint('articles', __name__)
 
 categories = ["Гуманитарные науки", "Естественные науки", "Точные науки", "Постнаука", "Биология", "История", "Социальные науки", "Культура", "Медицина", "Физика", "Психология", "Когнитивные науки", "Технологии", "Книги", "Животный мир", "Новости", "Игры", "Зарубежная литература", "Новости Ростова-на-дону"]
 trans_categories = [translit.transliterate(i) for i in categories]
 
+ALLOWED_EXTENSIONS = {'doc', 'docx'}
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+def convert_image_to_base64(file_path):
+    with open(file_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+    
 @articles.route('/new-article', methods=["GET", "POST"])
 def new_article():
 
     if request.method == "POST":
-        title = request.form['title']
-        content = request.form['content'] 
+        title = request.form['title'] 
         category_ids = [
         Categories.query.filter_by(name=request.form.get(f'category{i}')).first().id
         for i in range(1, 4)
@@ -37,13 +44,25 @@ def new_article():
                 
                 cover_path = os.path.join(upload_folder, cover_file.filename)
                 cover_file.save(cover_path)
-                cover = cover_path
+                cover = convert_image_to_base64(cover_path)
+        # Обработка загрузги статьи        
+        if 'word_file' in request.files:
+            file = request.files['word_file']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(upload_folder, filename))
+
+                    # Конвертация docx в html
+                with open(os.path.join(upload_folder, filename), "rb") as docx_file:
+                    result = mammoth.convert_to_html(docx_file)
+                    html_content = result.value  # Конвертированный HTML
+
 
         # Получаем user_id из сессии или устанавливаем в None
         user_id = session.get('userId')
 
         # Создание новой статьи
-        article = Articles(title=title, content=content, cover=cover, user_id=user_id, categories=category)
+        article = Articles(title=title, content=html_content, cover=cover, user_id=user_id, categories=category)
 
         db.session.add(article)
         db.session.commit()
