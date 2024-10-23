@@ -20,21 +20,6 @@ def convert_image_to_base64(file_path):
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 
-def convert_doc_to_docx(doc_file, docx_file):
-    # Создайте объект Word
-    word = win32com.client.Dispatch("Word.Application")
-    word.Visible = False
-
-    # Откройте документ
-    doc = word.Documents.Open(doc_file)
-
-    # Сохраните как .docx
-    doc.SaveAs(docx_file, FileFormat=16)  # 16 соответствует формату .docx
-
-    # Закройте документ и приложение Word
-    doc.Close()
-    word.Quit()
-
 
 @articles.route('/new-article', methods=["GET", "POST"])
 def new_article():
