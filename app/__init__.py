@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -7,7 +8,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///User.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.secret_key = 'ofjoiejj4983f4398j9f092k0k0ef0ejf093'
+    app.secret_key = os.urandom(24)
     
     db.init_app(app)
 
