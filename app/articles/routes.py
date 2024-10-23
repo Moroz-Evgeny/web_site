@@ -1,4 +1,4 @@
-import base64, json, os, mammoth
+import base64, json, os, mammoth, win32com.client
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
 from app.models import Articles, Categories
 from app import db
@@ -10,7 +10,7 @@ articles = Blueprint('articles', __name__)
 categories = ["Гуманитарные науки", "Естественные науки", "Точные науки", "Постнаука", "Биология", "История", "Социальные науки", "Культура", "Медицина", "Физика", "Психология", "Когнитивные науки", "Технологии", "Книги", "Животный мир", "Новости", "Игры", "Зарубежная литература", "Новости Ростова-на-дону"]
 trans_categories = [translit.transliterate(i) for i in categories]
 
-ALLOWED_EXTENSIONS = {'doc', 'docx'}
+ALLOWED_EXTENSIONS = {'docx'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -18,7 +18,24 @@ def allowed_file(filename):
 def convert_image_to_base64(file_path):
     with open(file_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
-    
+
+
+def convert_doc_to_docx(doc_file, docx_file):
+    # Создайте объект Word
+    word = win32com.client.Dispatch("Word.Application")
+    word.Visible = False
+
+    # Откройте документ
+    doc = word.Documents.Open(doc_file)
+
+    # Сохраните как .docx
+    doc.SaveAs(docx_file, FileFormat=16)  # 16 соответствует формату .docx
+
+    # Закройте документ и приложение Word
+    doc.Close()
+    word.Quit()
+
+
 @articles.route('/new-article', methods=["GET", "POST"])
 def new_article():
 
@@ -34,7 +51,7 @@ def new_article():
         category = json.dumps(category_ids)
 
         # Обработка загрузки картинки
-        if 'cover' in request.files:
+        if 'cover' and 'word_file' in request.files:
             cover_file = request.files['cover']
             if cover_file.filename != '':
                 # Сохраняем файл в папку uploads (создайте эту папку в корне вашего проекта)
@@ -45,8 +62,7 @@ def new_article():
                 cover_path = os.path.join(upload_folder, cover_file.filename)
                 cover_file.save(cover_path)
                 cover = convert_image_to_base64(cover_path)
-        # Обработка загрузги статьи        
-        if 'word_file' in request.files:
+            # Обработка загрузги статьи        
             file = request.files['word_file']
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
@@ -57,41 +73,48 @@ def new_article():
                     result = mammoth.convert_to_html(docx_file)
                     html_content = result.value  # Конвертированный HTML
 
+                # Получаем user_id из сессии или устанавливаем в None
+                user_id = session.get('userId')
 
-        # Получаем user_id из сессии или устанавливаем в None
-        user_id = session.get('userId')
+                # Создание новой статьи
+                article = Articles(title=title, content=html_content, cover=cover, user_id=user_id, categories=category)
 
-        # Создание новой статьи
-        article = Articles(title=title, content=html_content, cover=cover, user_id=user_id, categories=category)
-
-        db.session.add(article)
-        db.session.commit()
-
-        article_id = article.id
-
-        # Добавление в таблицу категорий id статьи
-        for category_id in category:
-            category = Categories.query.get(category_id)
-            
-            if category:
-                # Десериализуем список ID статей (если уже есть)
-                if category.id_article:
-                    id_article_list = json.loads(category.id_article)
-                else:
-                    id_article_list = []
-
-                # Добавляем новый ID статьи в список
-                id_article_list.append(article_id)
-
-                # Сериализуем список обратно в строку и сохраняем
-                category.id_article = json.dumps(id_article_list)
-
-                # Сохраняем изменения в базе данных
+                db.session.add(article)
                 db.session.commit()
-        
 
-        flash('Статья успешно добавлена!', 'success')
-        return redirect(url_for('main.index'))
+                article_id = article.id
+
+                # Добавление в таблицу категорий id статьи
+                for category_id in category:
+                    category = Categories.query.get(category_id)
+                    
+                    if category:
+                        # Десериализуем список ID статей (если уже есть)
+                        if category.id_article:
+                            id_article_list = json.loads(category.id_article)
+                        else:
+                            id_article_list = []
+
+                        # Добавляем новый ID статьи в список
+                        id_article_list.append(article_id)
+
+                        # Сериализуем список обратно в строку и сохраняем
+                        category.id_article = json.dumps(id_article_list)
+
+                        # Сохраняем изменения в базе данных
+                        db.session.commit()
+
+                flash('Статья успешно добавлена!', 'success')
+                return redirect(url_for('main.index'))
+            else:
+                flash('Файл должен быть с расширением docx')
+                return redirect(url_for('articles.new_article'))            
+            
+
+
+           
+
+
     else:
         if not session.get('userLogged'):
             flash('Войдите или зарегистрируйтесь!')

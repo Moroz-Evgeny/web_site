@@ -16,7 +16,9 @@ def create_app():
     from app.profile.routes import profile
     from app.articles.routes import articles
     from app.views import main
+    from app.articles_view.routes import articles_view
 
+    app.register_blueprint(articles_view)
     app.register_blueprint(auth)
     app.register_blueprint(profile)
     app.register_blueprint(articles)
