@@ -38,6 +38,10 @@ def convert_doc_to_docx(doc_file, docx_file):
 
 @articles.route('/new-article', methods=["GET", "POST"])
 def new_article():
+    # for i in trans_categories:
+    #     cat = Categories(name = i)
+    #     db.session.add(cat)
+    # db.session.commit()
 
     if request.method == "POST":
         title = request.form['title'] 
