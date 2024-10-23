@@ -1,0 +1,1 @@
+print("Взлом очка(Activated)")
