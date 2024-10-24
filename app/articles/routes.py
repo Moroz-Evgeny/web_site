@@ -1,4 +1,4 @@
-import base64, json, os, mammoth, win32com.client
+import base64, json, os, mammoth
 from flask import Blueprint, render_template, redirect, url_for, session, request, flash
 from app.models import Articles, Categories
 from app import db
