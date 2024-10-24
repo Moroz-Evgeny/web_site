@@ -12,6 +12,9 @@ body {
 	height: 50px;
 	background-color: #282828;
 	color: var(--text-light); /* Цвет текста как в карточках */
+	position: fixed;
+	z-index: 999999999;
+	width: 100%;
 }
 
 .header .header-title {
@@ -366,7 +369,8 @@ body {
 	border: none;
 	border-radius: 25px;
 	overflow: hidden;
-	padding-top: 20px;
+	padding-top: 70px;
+
 }
 
 .search-input {
@@ -518,7 +522,8 @@ form input {
 .container_profile {
 	max-width: 800px;
 	margin: 0 auto;
-	padding: 20px;
+	padding-top: 70px;
+
 }
 
 .container_profile header {

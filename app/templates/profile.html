@@ -68,7 +68,7 @@
 	<section id="articlesSection" style="display: none">
 		<h2>Мои статьи</h2>
 		<ul>
-			{% for i in range(len_art) %}
+			{% for i in range(len_art - 1, 0, -1) %}
 			<li><a href="/articles_view-{{userName}}-{{name_trans_article[i]}}">{{name_article[i]}}</a></li>
 			{% endfor %}
 		</ul>
